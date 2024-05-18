@@ -1,0 +1,62 @@
+<!DOCTYPE html><html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" href="data:,">
+		<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: left;}
+			.button_on { background-color: #4CAF50;border: none;color: black;padding:8px 20px;text-decoration: none;font-size: 30px; margin: 2px;cursor: pointer;}
+			body {font-family: Arial, sans-serif;display: flex;justify-content: center;align-items: center;height: 100vh;margin: 0;}
+			.cross-container {display: flex;flex-direction: column;align-items: center;}
+			.cross-container .horizontal {display: flex;}
+			.movement {display: flex;align-items: center;padding: 20px;}
+			.container {display: flex;flex-direction: column;align-items: center;}
+			.input {display: flex;flex-direction: column;align-items: center;}
+			.buttons {display: flex;flex-direction: row;align-items: center;}
+			.stream {display: flex;flex-direction: column;align-items: center;}
+			.up {display: flex;flex-direction: column;align-items: center;}
+			.label {display: block;text-align: center;line-height: 150%;font-size: .85em;}
+			.button_off {background-color: #555555;} 
+		</style>
+	</head>
+	<body onload="document.getElementByUd('stream').src=document.location.origin+':/stream';">
+	<div class="container">
+		<div class="up">
+			<div class="stream">
+				<h1> Camera </h1>
+				<img id='' src='stream' crossorigin='anonymous'>
+			</div>
+			<div class="buttons">
+				<form action='/pic' method='get'>
+					<button type='submit'> PIC</button>
+				</form>
+				<form action='/search' method='get'>
+					<button type='submit'> SEARCH</button>
+				</form>
+			</div>
+		</div>
+		<div id="down">
+			<div class="movement">
+				<div class="input">
+					<div> 
+						<label class="label"> Enter degree <br> val between -60 <br> and 60</label>
+					</div>
+					<input type="number" id="numberInput" min="-60" max="60">
+				</div>
+				<div class="cross-container">
+					<button  onclick="submitForm('/up')" > UP</button>
+					<div class="horizontal">
+						<button onclick="submitForm('/left')"> LEFT</button>
+						<button onclick="submitForm('/right')" > RIGHT</button>
+					</div>
+					<button onclick="submitForm('/down')" > DOWN</button>
+				</div>
+			</div>
+		</div>
+		<script>
+		function submitForm(formId) {
+			var inputValue = document.getElementById('numberInput').value;
+			var url = `${formId}?degree=${inputValue}`; 
+			fetch(url); 
+		}
+		</script>
+	</body>
+</html>
