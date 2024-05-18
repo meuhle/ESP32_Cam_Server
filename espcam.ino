@@ -32,8 +32,8 @@ const int num_line_html = 63;   //define arrray size, must know the html line, y
 String html_line[num_line_html];
 //----------------------------
 //Replace with your network credentials
-const char* ssid = "Quaglia";
-const char* password = "Wirele55";
+const char* ssid = "SSID";
+const char* password = "PASSWORD";
 WiFiClient client = NULL;
 
 const char * photoPrefix = "/photo_";
