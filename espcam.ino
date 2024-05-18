@@ -144,8 +144,6 @@ void flashLED(int flashtime) {
     digitalWrite(LED_PIN, LED_OFF); // turn Off
 }
 
-
-
 void startCameraServer(){
   httpd_config_t config = HTTPD_DEFAULT_CONFIG();
   config.server_port = 80;
@@ -155,8 +153,7 @@ void startCameraServer(){
     .method    = HTTP_GET,
     .handler   = stream_handler,
     .user_ctx  = NULL
-  };
-  
+  };  
   //Serial.printf("Starting web server on port: '%d'\n", config.server_port);
   if (httpd_start(&stream_httpd, &config) == ESP_OK) {
     httpd_register_uri_handler(stream_httpd, &index_uri);
@@ -190,8 +187,7 @@ void print_page(){
   }
 }
 
-void takeSavePhoto(){
-  
+void takeSavePhoto(){  
   camera_fb_t * fb = NULL;
   fb = esp_camera_fb_get();
   if (!fb) {
@@ -225,9 +221,7 @@ void listFiles() {
     Serial.println("Failed to open directory");
     return;
   }
-
   Serial.println("Files found on SD card:");
-
   while (File file = root.openNextFile()) {
     Serial.print("- ");
     Serial.println(file.name());
@@ -235,7 +229,6 @@ void listFiles() {
   }
   root.close();
 }
-
 
 void setup() {
   Serial.begin(115200);
@@ -270,8 +263,7 @@ void setup() {
   config.pixel_format = PIXFORMAT_JPEG; 
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector
   pinMode(LED_PIN, OUTPUT);
-  digitalWrite(LED_PIN, LED_ON);
-  
+  digitalWrite(LED_PIN, LED_ON);  
    
   if(psramFound()){
     config.frame_size = FRAMESIZE_UXGA;
@@ -289,10 +281,8 @@ void setup() {
     Serial.printf("Camera init failed with error 0x%x", err);
     return;
   }
-
   sensor_t * s = esp_camera_sensor_get();
   s->set_framesize(s,FRAMESIZE_VGA);
-
   //Serial.println("Starting SD Card");
   if(!SD_MMC.begin()){
     Serial.println("SD Card Mount Failed");
@@ -319,11 +309,9 @@ void setup() {
   startCameraServer();  
   // Start server
   server.begin();
-
 }
 
 void loop() {
-
    client = server.available();
    if (client) {                             // If a new client connects,
     currentTime = millis();
@@ -340,16 +328,7 @@ void loop() {
         if (c == '\n') {                    // if the byte is a newline character
           // if the current line is blank, you got two newline characters in a row.
           // that's the end of the client HTTP request, so send a response:
-          if (currentLine.length() == 0) {
-            
-            //Serial.println(header);
-                      /*
-             * pos = header.indexOf("GET /left");
-             * pv = header.indexOf("DE", pos);
-             * fv = header.substring(pos+11,pv).toInt();             
-             * fv = map(fv,-60,60,0,180); 
-             * servo.write(fv);
-             */
+          if (currentLine.length() == 0) {            
             // HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
             // and a content-type so the client knows what's coming, then a blank line:
             client.println("HTTP/1.1 200 OK");
@@ -368,8 +347,7 @@ void loop() {
             Serial.println("pic");
               takeSavePhoto();
               header="";
-            }
-            
+            }            
             if (header.indexOf("GET /up") != -1) {
               p1 =   header.indexOf("GET /up?degree=")+15;
               p2 = header.indexOf("DE",p1);
@@ -422,9 +400,7 @@ void loop() {
               servo2.write(v);  
               header="";
             }
-
-            print_page();
-                        
+            print_page();                        
             // The HTTP response ends with another blank line
             client.println();
             // Break out of the while loop
